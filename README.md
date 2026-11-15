@@ -1,8 +1,8 @@
 <h1 align="center">Claude Taskbar</h1>
 
 <p align="center">
-  <b>All your Claude Code sessions, right on the Windows taskbar.</b><br>
-  See what's working, what just finished and which PRs are green, without opening a single window.
+  <b>Stop forgetting the Claude sessions you started.</b><br>
+  An always-visible overview on the Windows taskbar: what's working, what's done and waiting for you, and how long it's been sitting there.
 </p>
 
 <p align="center">
@@ -23,9 +23,20 @@
 
 ## Why
 
-You start three Claude Code sessions, switch to something else, and lose track: which one is still
-thinking, which one is waiting for you, did that PR's checks pass? **Claude Taskbar** sits in the empty
-part of your taskbar and answers all of that at a glance.
+Claude Code makes it easy to start a session, kick off a task and move on. The catch: you start a few,
+switch to something else, and some of them are left hanging. Claude finished hours ago and is waiting
+for your answer, but you've forgotten the session exists.
+
+**Claude Taskbar** keeps every running session in view, in the empty part of your taskbar, so nothing
+slips through:
+
+- **Nothing out of sight.** Your sessions sit on the taskbar all the time, not buried in a window
+  you have to open.
+- **See who's waiting on you.** A session Claude has finished shows *done* in green, then how long it's
+  been idle, so one that's sat there for hours stands out.
+- **One click to pick it back up.** Click a session to jump straight to it in the Claude app.
+- **Know where each one ended up.** The PR icon shows whether its work was merged, is still running
+  checks, or failed.
 
 ## What you see
 
