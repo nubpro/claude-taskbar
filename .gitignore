@@ -1,0 +1,6 @@
+# per-machine settings and logs
+config.json
+widget.log
+
+__pycache__/
+*.pyc
