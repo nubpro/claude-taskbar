@@ -31,6 +31,7 @@ DONE_SECONDS = 120          # how long a "done" badge stays after busy -> idle
 MAX_ROWS = 6                # most sessions shown; working first, then just-finished, then most recent
 FLOAT_WIDTH = 240
 CELL_W = 260                # width of one session in taskbar mode
+TRAY_GAP = 40               # space kept between the widget and the tray's ^ arrow
 TB_ROWS = 3                 # sessions stacked per column on the taskbar
 HERE = Path(__file__).resolve().parent
 CONFIG = HERE / "config.json"
@@ -534,6 +535,7 @@ class Widget:
             if x is None or y is None:
                 x, y = self.root.winfo_screenwidth() - FLOAT_WIDTH - 24, 24
             self.root.minsize(FLOAT_WIDTH, 1)
+            self.root.geometry("")  # drop the taskbar strip's fixed size; fit the rows again
             self.root.geometry(f"+{x}+{y}")
         self.draw()
 
@@ -568,7 +570,7 @@ class Widget:
         w = CELL_W * cols
         r = self.cfg.get("tb_right")
         if r is None:
-            r = tray_left - 12
+            r = tray_left - TRAY_GAP
         x = max(left, min(int(r) - w, right - w))
         self.root.geometry(f"{w}x{h}+{x}+{top}")
         return h
