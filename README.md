@@ -10,6 +10,7 @@
   <img alt="Python 3.12+" src="https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white">
   <img alt="Claude Code" src="https://img.shields.io/badge/for-Claude%20Code-D97757">
   <img alt="Single file" src="https://img.shields.io/badge/install-one%20file-6fbf73">
+  <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-a371f7"></a>
 </p>
 
 <p align="center">
@@ -119,3 +120,7 @@ The images above use made-up sessions. To rebuild them, close the widget and run
 ```powershell
 python tools/make_previews.py
 ```
+
+## License
+
+[MIT](LICENSE): free to use, change and share, including commercially. Just keep the copyright notice.
