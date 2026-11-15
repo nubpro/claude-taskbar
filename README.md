@@ -1,4 +1,4 @@
-<h1 align="center">claude-taskbar</h1>
+<h1 align="center">Claude Taskbar</h1>
 
 <p align="center">
   <b>All your Claude Code sessions, right on the Windows taskbar.</b><br>
@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/taskbar.gif" alt="claude-taskbar docked on the Windows taskbar: a session finishes, the highlight moves, a PR turns green" width="1080">
+  <img src="docs/taskbar.gif" alt="Claude Taskbar docked on the Windows taskbar: a session finishes, the highlight moves, a PR turns green" width="1080">
 </p>
 
 <p align="center"><sub>Live on the taskbar: a session finishes (green <i>done</i>), you click another (the highlight follows), a failing PR goes green.</sub></p>
@@ -23,7 +23,7 @@
 ## Why
 
 You start three Claude Code sessions, switch to something else, and lose track: which one is still
-thinking, which one is waiting for you, did that PR's checks pass? **claude-taskbar** sits in the empty
+thinking, which one is waiting for you, did that PR's checks pass? **Claude Taskbar** sits in the empty
 part of your taskbar and answers all of that at a glance.
 
 ## What you see
@@ -78,7 +78,7 @@ Optional:
 Run this once from the `claude-taskbar` folder in PowerShell. It puts a shortcut in your Startup folder:
 
 ```powershell
-$s = (New-Object -ComObject WScript.Shell).CreateShortcut("$([Environment]::GetFolderPath('Startup'))\claude-taskbar.lnk")
+$s = (New-Object -ComObject WScript.Shell).CreateShortcut("$([Environment]::GetFolderPath('Startup'))\Claude Taskbar.lnk")
 $s.TargetPath = (Get-Command pythonw).Source
 $s.Arguments = "`"$PWD\claude_sessions_widget.pyw`""
 $s.WorkingDirectory = "$PWD"
