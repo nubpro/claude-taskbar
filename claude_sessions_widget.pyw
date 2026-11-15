@@ -443,7 +443,11 @@ class Widget:
         self.current_id = ""
 
         self.root = tk.Tk()
-        self.root.title("Claude sessions")
+        self.root.title("Claude Taskbar")
+        try:
+            self.root.iconbitmap(default=str(HERE / "claude_taskbar.ico"))
+        except tk.TclError:
+            pass  # icon file missing: keep Tk's default
         self.root.overrideredirect(True)
         self.root.attributes("-topmost", True)
         self.root.attributes("-transparentcolor", KEY)

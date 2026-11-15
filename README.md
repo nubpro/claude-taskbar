@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/icon.png" alt="Claude Taskbar icon" width="112"></p>
+
 <h1 align="center">Claude Taskbar</h1>
 
 <p align="center">
@@ -94,6 +96,7 @@ $s = (New-Object -ComObject WScript.Shell).CreateShortcut("$([Environment]::GetF
 $s.TargetPath = (Get-Command pythonw).Source
 $s.Arguments = "`"$PWD\claude_sessions_widget.pyw`""
 $s.WorkingDirectory = "$PWD"
+$s.IconLocation = "$PWD\claude_taskbar.ico"
 $s.Save()
 ```
 
