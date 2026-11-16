@@ -436,6 +436,8 @@ class Widget:
         self._subs: list[tk.Label] = []
         self._hidden = False
         self._fullscreen_hits = 0
+        self._docked_at = None
+        self._redock_ticks = 0
         self._hwnd = None
         self.prs = PrWatcher()
         self.prompts = PromptWatcher()
@@ -563,12 +565,14 @@ class Widget:
             w.bind("<ButtonRelease-1>", lambda e: self.save_cfg())
             w.bind("<Double-Button-1>", lambda e: self.toggle_collapse())
 
-    def place_on_taskbar(self) -> int:
-        """Size and place the docked strip on the taskbar; returns its height."""
+    def taskbar_target(self) -> tuple[int, int, int, int] | None:
+        """Where the docked strip belongs right now: (width, height, x, y); None if there is no taskbar yet."""
         geo = taskbar_geometry()
         if not geo:
-            return 48
+            return None
         (left, top, right, bottom), tray_left = geo
+        if bottom - top <= 0 or right - left <= 0:
+            return None
         h = bottom - top
         cols = max(1, -(-min(MAX_ROWS, max(1, len(self.visible_specs()))) // TB_ROWS))
         w = CELL_W * cols
@@ -576,8 +580,31 @@ class Widget:
         if r is None:
             r = tray_left - TRAY_GAP
         x = max(left, min(int(r) - w, right - w))
-        self.root.geometry(f"{w}x{h}+{x}+{top}")
+        return w, h, x, top
+
+    def place_on_taskbar(self) -> int:
+        """Size and place the docked strip on the taskbar; returns its height."""
+        t = self.taskbar_target()
+        if not t:
+            return 48  # no taskbar yet (just signed in): redock() moves us once it appears
+        w, h, x, y = t
+        self.root.geometry(f"{w}x{h}+{x}+{y}")
+        self._docked_at = t
         return h
+
+    def redock(self) -> None:
+        """Follow the taskbar: it may not exist yet right after sign-in, or may move or resize later."""
+        if self.cfg["mode"] != "taskbar" or self._hidden:
+            return
+        if user32.GetAsyncKeyState(0x01) & 0x8000:
+            return  # mouse button held: possibly mid-drag, leave it alone
+        t = self.taskbar_target()
+        if t and t != self._docked_at:
+            height_changed = not self._docked_at or t[1] != self._docked_at[1]
+            self.place_on_taskbar()
+            if height_changed:
+                self._layout = None  # rows are laid out for the bar's height: redraw them
+                self.draw()
 
     # ----- moving -----
     def float_drag_start(self, e) -> None:
@@ -695,6 +722,12 @@ class Widget:
 
     def keep_on_top(self) -> None:
         self.raise_now()
+        self._redock_ticks += 1
+        if self._redock_ticks % 7 == 0:  # about every 2 seconds
+            try:
+                self.redock()
+            except tk.TclError:
+                pass
         self.root.after(TOPMOST_MS, self.keep_on_top)
 
     def watch_window_switches(self) -> None:

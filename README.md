@@ -89,18 +89,24 @@ Optional:
 
 ### Start it with Windows
 
-Run this once from the `claude-taskbar` folder in PowerShell. It puts a shortcut in your Startup folder:
+Run this once from the `claude-taskbar` folder in PowerShell. It adds a Task Scheduler entry that
+starts the widget the moment you sign in (a Startup-folder shortcut also works, but Windows holds those
+back for up to a minute or two after sign-in):
 
 ```powershell
-$s = (New-Object -ComObject WScript.Shell).CreateShortcut("$([Environment]::GetFolderPath('Startup'))\Claude Taskbar.lnk")
-$s.TargetPath = (Get-Command pythonw).Source
-$s.Arguments = "`"$PWD\claude_sessions_widget.pyw`""
-$s.WorkingDirectory = "$PWD"
-$s.IconLocation = "$PWD\claude_taskbar.ico"
-$s.Save()
+$a = New-ScheduledTaskAction -Execute (Get-Command pythonw).Source `
+       -Argument "`"$PWD\claude_sessions_widget.pyw`"" -WorkingDirectory "$PWD"
+$t = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
+$o = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
+       -ExecutionTimeLimit 0 -MultipleInstances IgnoreNew
+Register-ScheduledTask -TaskName "Claude Taskbar" -Action $a -Trigger $t -Settings $o
 ```
 
-To stop it starting with Windows, turn it off in **Task Manager → Startup apps**, or delete the shortcut.
+To stop it starting with Windows:
+
+```powershell
+Unregister-ScheduledTask -TaskName "Claude Taskbar" -Confirm:$false
+```
 
 ## Controls
 
